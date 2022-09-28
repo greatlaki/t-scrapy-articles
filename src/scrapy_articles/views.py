@@ -1,6 +1,25 @@
 import requests
 from openpyxl import load_workbook
+from requests import Response
 from rest_framework import status
+from rest_framework.views import APIView
+
+
+class ListArticles(APIView):
+
+    def post(self, request):
+        json_response = []
+
+        file = request.data.get('file')
+        if not file:
+            return Response({"Error": "You must upload a file"})
+
+        articles = xlsx_to_tuple(file=file)
+
+        if len(json_response) == 1:
+            json_response = json_response[0]
+
+        return Response(json_response)
 
 
 def get_product_data(article):
